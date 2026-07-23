@@ -1,71 +1,76 @@
 # Terminal Challenge Toolkit
 
-Sada nástrojů pro ovládání PC pouze přes terminál.
+A set of tools for controlling your PC entirely from the terminal.
 
-## Nástroje
+## Tools
 
 ### 🌟 Glow IDE
 ```
-glow                      Otevře prázdný editor
-glow soubor.py            Otevře soubor
-glow --install            Nainstaluje do PATH
-glow --uninstall          Odebere z PATH
+glow                      Open empty editor
+glow file.py              Open a file
+glow --install            Add to PATH
+glow --uninstall          Remove from PATH
 ```
-- Syntax highlighting pro Python, JS, Rust, Go
-- Císla řádků, status bar
+- Syntax highlighting for Python, JS, Rust, Go
+- Line numbers, status bar
 - Ctrl+S=save, Ctrl+Q=quit, Ctrl+O=open, Ctrl+G=goto
 
 ### 📁 File Tool
 ```
-ft cp soubor.py backup.py          Kopíruje soubor
-ft cp -r slozka/ nova/             Kopíruje složku
-ft mv soubor.py archiv/            Přesune soubor
-ft rm *.bak                        Smaže soubory
-ft ren stary.py novy.py            Přejmenuje
-ft ls                              Zobrazí obsah
-ft find *.py                       Hledá soubory
-ft size ./projekt                  Velikost složky
-ft tree                            Stromová struktura
+ft cp file.py backup.py          Copy file
+ft cp -r folder/ new/            Copy folder recursively
+ft mv file.py archive/           Move file
+ft rm *.bak                      Delete files
+ft ren old.py new.py             Rename file
+ft ls                            List directory contents
+ft find *.py                     Search for files
+ft size ./project                Folder size
+ft tree                          Tree view
 ```
 
 ### ⚔️ AI Battle
 ```
-python ai_battle.py                Dvě AI debatují
+python ai_battle.py              Two AIs debate each other
 ```
-- Streaming - vidíš text písmenko po písmenku
-- Zobrazení myšlení AI (reasoning)
-- Podpora: OpenRouter, DeepSeek, OpenAI, Anthropic, Google
+- Real-time streaming - watch text appear character by character
+- Shows AI reasoning/thinking process
+- Supports: OpenRouter, DeepSeek, OpenAI, Anthropic, Google
 
 ### 🛠️ Terminal Challenge Toolkit
 ```
-python tools.py                    Hlavní menu nástrojů
+python tools.py                  Main tools menu
 ```
 
-## Instalace
+## Installation
 
-1. Klonuj repo:
+1. Clone the repo:
 ```bash
 git clone https://github.com/UdoFreak89/powershelltools.git
 ```
 
-2. Nainstaluj do PATH:
+2. Install to PATH:
 ```bash
 .\install.bat
 ```
 
-3. Restartuj terminal a používej:
+3. Restart your terminal and use:
 ```bash
 glow --help
 ft --help
 ```
 
-## Požadavky
+## Requirements
 
 - Python 3.8+
-- prompt_toolkit (pro Glow IDE)
-- psutil (pro sysinfo)
-- requests (pro AI Battle)
+- prompt_toolkit (for Glow IDE)
+- psutil (for sysinfo)
+- requests (for AI Battle)
 
-## Licence
+## License
 
 MIT
+
+## Contributors
+
+- **UdoFreak89** - Project creator
+- **opencode** - AI assistant (code, architecture, debugging)
