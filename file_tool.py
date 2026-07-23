@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-FILE TOOL - Zjednoduseni prace se soubory v terminalu
-Kopirovani, presouvani, prejmenovani, mazani, hledani - vse jednim prikazem.
+FILE TOOL - Simplified file operations in terminal
+Copy, move, rename, delete, search - all in one command.
 """
 
 import os
@@ -24,52 +24,52 @@ def print_banner():
     print("""
 +====================================+
 |        FILE TOOL v1.0              |
-|   Kopirovani, presouvani, hledani  |
+|  Copy, move, search, batch ops    |
 +====================================+
     """)
 
 def print_help():
     print("""
-POUZITI:
-  ft <prikaz> <zdroj> <cil>
+USAGE:
+  ft <command> <source> <dest>
 
-PRIKAZY:
-  cp, copy      Kopiruj soubor/slozku
-  mv, move      Presun soubor/slozku
-  rm, del       Smaz soubor/slozku
-  ren           Prejmenuj soubor
-  ls            Zobraz obsah slozky
-  find          Hledej soubory
-  size          Velikost souboru/slozky
-  tree          Stromova struktura
-  md            Vytvor slozku
-  touch         Vytvor prazdny soubor
-  info          Info o souboru
-  batch         Hromadne operace
+COMMANDS:
+  cp, copy      Copy file/folder
+  mv, move      Move file/folder
+  rm, del       Delete file/folder
+  ren           Rename file
+  ls            List directory contents
+  find          Search for files
+  size          File/folder size
+  tree          Tree structure
+  md            Create directory
+  touch         Create empty file
+  info          File info
+  batch         Batch operations
 
-PRIKLADY:
-  ft cp soubor.py backup.py           Kopiruj soubor
-  ft cp soubor.py zaloha/             Kopiruj do slozky
-  ft cp -r stara_nova/ nova/          Kopiruj celou slozku
-  ft mv soubor.py archiv/             Presun soubor
-  ft rm stare_bak*.bak               Smaz soubory
-  ft ren stary.py novy.py            Prejmenuj
-  ft ls                               Zobraz aktualni slozku
-  ft ls ~/Documents                   Zobraz Documents
-  ft find *.py                        Hledej Python soubory
-  ft find *.py ~/projekty             Hledej v jine slozce
-  ft size ./projekt                   Velikost slozky
-  ft tree                             Stromova struktura
-  ft md nova_slozka                   Vytvor slozku
-  ft touch prazdny.txt                Vytvor soubor
-  ft info soubor.py                   Detaily o souboru
-  ft batch cp *.py backup/            Kopiruj vsechny .py do slozky
-  ft batch rm *.bak                   Smaz vsechny .bak
+EXAMPLES:
+  ft cp file.py backup.py           Copy file
+  ft cp file.py backup/             Copy to folder
+  ft cp -r old_dir/ new/            Copy entire folder
+  ft mv file.py archive/            Move file
+  ft rm old_bak*.bak               Delete files
+  ft ren old.py new.py             Rename
+  ft ls                            List current dir
+  ft ls ~/Documents                List Documents
+  ft find *.py                     Find Python files
+  ft find *.py ~/projects          Find in other dir
+  ft size ./project                Folder size
+  ft tree                          Tree structure
+  ft md new_folder                 Create folder
+  ft touch empty.txt               Create file
+  ft info file.py                  File details
+  ft batch cp *.py backup/         Copy all .py to folder
+  ft batch rm *.bak                Delete all .bak
     """)
 
 def cmd_copy(args):
     if len(args) < 2:
-        print("Pouziti: ft cp <zdroj> <cil>")
+        print("Usage: ft cp <source> <dest>")
         return
     
     src = args[0]
@@ -84,7 +84,7 @@ def cmd_copy(args):
     dst_path = Path(dst)
     
     if not src_path.exists():
-        print(f"Chyba: {src} neexistuje!")
+        print(f"Error: {src} does not exist!")
         return
     
     try:
@@ -93,20 +93,20 @@ def cmd_copy(args):
                 if dst_path.exists():
                     dst_path = dst_path / src_path.name
                 shutil.copytree(src_path, dst_path)
-                print(f"Slozka zkopirovana: {src} -> {dst}")
+                print(f"Folder copied: {src} -> {dst}")
             else:
-                print("Pro kopirovani slozky pouzij: ft cp -r <slozka> <cil>")
+                print("To copy a folder use: ft cp -r <folder> <dest>")
         else:
             if dst_path.is_dir():
                 dst_path = dst_path / src_path.name
             shutil.copy2(src_path, dst_path)
-            print(f"Soubor zkopirovan: {src} -> {dst}")
+            print(f"File copied: {src} -> {dst}")
     except Exception as e:
-        print(f"Chyba: {e}")
+        print(f"Error: {e}")
 
 def cmd_move(args):
     if len(args) < 2:
-        print("Pouziti: ft mv <zdroj> <cil>")
+        print("Usage: ft mv <source> <dest>")
         return
     
     src = args[0]
@@ -116,65 +116,65 @@ def cmd_move(args):
     dst_path = Path(dst)
     
     if not src_path.exists():
-        print(f"Chyba: {src} neexistuje!")
+        print(f"Error: {src} does not exist!")
         return
     
     try:
         if dst_path.is_dir():
             dst_path = dst_path / src_path.name
         shutil.move(str(src_path), str(dst_path))
-        print(f"Presunuto: {src} -> {dst}")
+        print(f"Moved: {src} -> {dst}")
     except Exception as e:
-        print(f"Chyba: {e}")
+        print(f"Error: {e}")
 
 def cmd_delete(args):
     if len(args) < 1:
-        print("Pouziti: ft rm <soubor>")
+        print("Usage: ft rm <file>")
         return
     
     for pattern in args:
         matches = list(Path(".").glob(pattern))
         if not matches:
-            print(f"Nenalezeno: {pattern}")
+            print(f"Not found: {pattern}")
             continue
         
         for path in matches:
             try:
                 if path.is_dir():
                     shutil.rmtree(path)
-                    print(f"Slozka smazana: {path}")
+                    print(f"Folder deleted: {path}")
                 else:
                     path.unlink()
-                    print(f"Soubor smazan: {path}")
+                    print(f"File deleted: {path}")
             except Exception as e:
-                print(f"Chyba pri mazani {path}: {e}")
+                print(f"Error deleting {path}: {e}")
 
 def cmd_rename(args):
     if len(args) < 2:
-        print("Pouziti: ft ren <stary> <novy>")
+        print("Usage: ft ren <old> <new>")
         return
     
     src = Path(args[0])
     dst = Path(args[1])
     
     if not src.exists():
-        print(f"Chyba: {args[0]} neexistuje!")
+        print(f"Error: {args[0]} does not exist!")
         return
     
     try:
         src.rename(dst)
-        print(f"Prejmenovano: {args[0]} -> {args[1]}")
+        print(f"Renamed: {args[0]} -> {args[1]}")
     except Exception as e:
-        print(f"Chyba: {e}")
+        print(f"Error: {e}")
 
 def cmd_list(args):
     path = Path(args[0]) if args else Path(".")
     
     if not path.exists():
-        print(f"Chyba: {path} neexistuje!")
+        print(f"Error: {path} does not exist!")
         return
     
-    print(f"\nObsah: {path.absolute()}\n")
+    print(f"\nContents: {path.absolute()}\n")
     
     items = sorted(path.iterdir(), key=lambda x: (x.is_file(), x.name.lower()))
     
@@ -190,21 +190,21 @@ def cmd_list(args):
             print(f"  [FILE] {item.name:30} {human_size(size):>8}")
         count += 1
     
-    print(f"\n{count} polozek, celkem {human_size(total_size)}")
+    print(f"\n{count} items, total {human_size(total_size)}")
 
 def cmd_find(args):
     if not args:
-        print("Pouziti: ft find <vzor> [cesta]")
+        print("Usage: ft find <pattern> [path]")
         return
     
     pattern = args[0]
     root = Path(args[1]) if len(args) > 1 else Path(".")
     
     if not root.exists():
-        print(f"Chyba: {root} neexistuje!")
+        print(f"Error: {root} does not exist!")
         return
     
-    print(f"Hledam '{pattern}' v {root.absolute()}...\n")
+    print(f"Searching for '{pattern}' in {root.absolute()}...\n")
     
     matches = []
     for path in root.rglob("*"):
@@ -217,15 +217,15 @@ def cmd_find(args):
             if m.is_file():
                 size = f" ({human_size(m.stat().st_size)})"
             print(f"  {m}{size}")
-        print(f"\nNalezeno: {len(matches)} souboru")
+        print(f"\nFound: {len(matches)} files")
     else:
-        print("Nic nenalezeno")
+        print("Nothing found")
 
 def cmd_size(args):
     path = Path(args[0]) if args else Path(".")
     
     if not path.exists():
-        print(f"Chyba: {path} neexistuje!")
+        print(f"Error: {path} does not exist!")
         return
     
     if path.is_file():
@@ -239,13 +239,13 @@ def cmd_size(args):
             total += item.stat().st_size
             count += 1
     
-    print(f"{path}: {human_size(total)} ({count} souboru)")
+    print(f"{path}: {human_size(total)} ({count} files)")
 
 def cmd_tree(args):
     path = Path(args[0]) if args else Path(".")
     
     if not path.exists():
-        print(f"Chyba: {path} neexistuje!")
+        print(f"Error: {path} does not exist!")
         return
     
     def print_tree(p, prefix=""):
@@ -258,56 +258,56 @@ def cmd_tree(args):
         
         for i, d in enumerate(dirs):
             is_last = (i == len(dirs) - 1) and not files
-            connector = "└── " if is_last else "├── "
+            connector = "\\--- " if is_last else "+--- "
             print(f"{prefix}{connector}{d.name}/")
-            print_tree(d, prefix + ("    " if is_last else "│   "))
+            print_tree(d, prefix + ("    " if is_last else "|   "))
     
     print(f"{path.name}/")
     print_tree(path)
 
 def cmd_mkdir(args):
     if not args:
-        print("Pouziti: ft md <nazev_slozky>")
+        print("Usage: ft md <folder_name>")
         return
     
     for name in args:
         try:
             Path(name).mkdir(parents=True, exist_ok=True)
-            print(f"Slozka vytvorena: {name}")
+            print(f"Folder created: {name}")
         except Exception as e:
-            print(f"Chyba: {e}")
+            print(f"Error: {e}")
 
 def cmd_touch(args):
     if not args:
-        print("Pouziti: ft touch <nazev_souboru>")
+        print("Usage: ft touch <file_name>")
         return
     
     for name in args:
         try:
             Path(name).touch()
-            print(f"Soubor vytvoren: {name}")
+            print(f"File created: {name}")
         except Exception as e:
-            print(f"Chyba: {e}")
+            print(f"Error: {e}")
 
 def cmd_info(args):
     if not args:
-        print("Pouziti: ft info <soubor>")
+        print("Usage: ft info <file>")
         return
     
     path = Path(args[0])
     
     if not path.exists():
-        print(f"Chyba: {path} neexistuje!")
+        print(f"Error: {path} does not exist!")
         return
     
     stat = path.stat()
     
-    print(f"\nInformace o: {path}")
-    print(f"  Typ:        {'Slozka' if path.is_dir() else 'Soubor'}")
-    print(f"  Velikost:   {human_size(stat.st_size)}")
-    print(f"  Vytvoren:   {datetime.fromtimestamp(stat.st_ctime).strftime('%d.%m.%Y %H:%M')}")
-    print(f"  Upraven:    {datetime.fromtimestamp(stat.st_mtime).strftime('%d.%m.%Y %H:%M')}")
-    print(f"  Pristup:    {datetime.fromtimestamp(stat.st_atime).strftime('%d.%m.%Y %H:%M')}")
+    print(f"\nInfo: {path}")
+    print(f"  Type:        {'Folder' if path.is_dir() else 'File'}")
+    print(f"  Size:        {human_size(stat.st_size)}")
+    print(f"  Created:     {datetime.fromtimestamp(stat.st_ctime).strftime('%Y-%m-%d %H:%M')}")
+    print(f"  Modified:    {datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d %H:%M')}")
+    print(f"  Accessed:    {datetime.fromtimestamp(stat.st_atime).strftime('%Y-%m-%d %H:%M')}")
     
     if path.is_file():
         ext = path.suffix.lower()
@@ -319,12 +319,12 @@ def cmd_info(args):
             ".html": "HTML", ".css": "CSS", ".bat": "Batch",
             ".ps1": "PowerShell", ".sh": "Shell", ".sql": "SQL",
         }
-        print(f"  Typ souboru: {types.get(ext, ext or 'Neznamy')}")
+        print(f"  File type:   {types.get(ext, ext or 'Unknown')}")
 
 def cmd_batch(args):
     if len(args) < 3:
-        print("Pouziti: ft batch <cp|mv|rm> <vzor> <cil>")
-        print("Priklad: ft batch cp *.py backup/")
+        print("Usage: ft batch <cp|mv|rm> <pattern> <dest>")
+        print("Example: ft batch cp *.py backup/")
         return
     
     action = args[0]
@@ -334,10 +334,10 @@ def cmd_batch(args):
     matches = list(Path(".").glob(pattern))
     
     if not matches:
-        print(f"Nenalezeno: {pattern}")
+        print(f"Not found: {pattern}")
         return
     
-    print(f"Nalezeno {len(matches)} souboru\n")
+    print(f"Found {len(matches)} files\n")
     
     if action in ("cp", "copy"):
         if target:
@@ -346,7 +346,7 @@ def cmd_batch(args):
             if m.is_file():
                 dst = target / m.name if target else m
                 shutil.copy2(m, dst)
-                print(f"  Kopirovano: {m.name}")
+                print(f"  Copied: {m.name}")
     
     elif action in ("mv", "move"):
         if target:
@@ -355,7 +355,7 @@ def cmd_batch(args):
             if m.is_file():
                 dst = target / m.name if target else m
                 shutil.move(str(m), str(dst))
-                print(f"  Presunuto: {m.name}")
+                print(f"  Moved: {m.name}")
     
     elif action in ("rm", "del"):
         for m in matches:
@@ -364,12 +364,12 @@ def cmd_batch(args):
                     shutil.rmtree(m)
                 else:
                     m.unlink()
-                print(f"  Smazano: {m.name}")
+                print(f"  Deleted: {m.name}")
             except Exception as e:
-                print(f"  Chyba {m.name}: {e}")
+                print(f"  Error {m.name}: {e}")
     
     else:
-        print(f"Neznamy prikaz batch: {action}")
+        print(f"Unknown batch command: {action}")
 
 def main():
     if len(sys.argv) < 2 or sys.argv[1] in ("--help", "-h", "/?"):
@@ -401,8 +401,8 @@ def main():
     if cmd in commands:
         commands[cmd](args)
     else:
-        print(f"Neznamy prikaz: {cmd}")
-        print("Pouzij: ft --help")
+        print(f"Unknown command: {cmd}")
+        print("Use: ft --help")
 
 if __name__ == "__main__":
     main()

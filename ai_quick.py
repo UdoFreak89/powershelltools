@@ -10,7 +10,7 @@ import json
 import requests
 
 class StreamPrinter:
-    """Real-time tisk streamovanych dat"""
+    """Real-time printing of streamed data"""
     def __init__(self):
         self.thinking_started = False
         self.response_started = False
@@ -19,7 +19,7 @@ class StreamPrinter:
         self.printing_thinking = False
         self.printing_response = False
     
-    def start_thinking(self, label="Premyslim"):
+    def start_thinking(self, label="Thinking"):
         if not self.thinking_started:
             print(f"\n   +---- [BRAIN] {label} " + "-" * 40 + "+")
             self.thinking_started = True
@@ -35,7 +35,7 @@ class StreamPrinter:
         if self.thinking_started:
             print(f"\n   +" + "-" * 50 + "+")
     
-    def start_response(self, label="Odpoved"):
+    def start_response(self, label="Response"):
         if not self.response_started:
             print(f"\n   /[RESPONSE] {label} " + "=" * 40 + "\\")
             self.response_started = True
@@ -257,15 +257,15 @@ def main():
 |           AI BATTLE QUICK - STREAMING               |
 +====================================================+
 
-Pouziti:
+Usage:
   python ai_quick.py <p1> <key1> <model1> <p2> <key2> <model2> <topic>
 
-Poskytovatele: openai, anthropo, google, deepseek, openrouter
+Providers: openai, anthropo, google, deepseek, openrouter
 
-Priklady:
-  python ai_quick.py openrouter "sk-or-xxx" openai/gpt-4o deepseek "sk-xxx" deepseek-chat "Je AI lepsi nez clovek?"
+Examples:
+  python ai_quick.py openrouter "sk-or-xxx" openai/gpt-4o deepseek "sk-xxx" deepseek-chat "Is AI better than humans?"
 
-  python ai_quick.py openrouter "sk-or-xxx" cohere/north-mini-code:free openai "sk-xxx" gpt-4o "Kdo je lepsi koder?"
+  python ai_quick.py openrouter "sk-or-xxx" cohere/north-mini-code:free openai "sk-xxx" gpt-4o "Who is the better coder?"
 """)
         sys.exit(1)
     
@@ -273,29 +273,29 @@ Priklady:
     topic = " ".join(sys.argv[7:])
     
     if p1 not in STREAM_FNS or p2 not in STREAM_FNS:
-        print(f"Neznamy provider! Moznosti: {', '.join(STREAM_FNS.keys())}")
+        print(f"Unknown provider! Options: {', '.join(STREAM_FNS.keys())}")
         sys.exit(1)
     
     chat1 = STREAM_FNS[p1]
     chat2 = STREAM_FNS[p2]
     
     conv1 = [
-        {"role": "system", "content": f"Jsi AI. Vedes debatu na tema: {topic}. Odpovez strucne (2-3 vety)."},
-        {"role": "user", "content": f"Zacni debatu na tema: {topic}"}
+        {"role": "system", "content": f"You are an AI. You are debating on the topic: {topic}. Reply briefly (2-3 sentences)."},
+        {"role": "user", "content": f"Start the debate on the topic: {topic}"}
     ]
     conv2 = [
-        {"role": "system", "content": f"Jsi AI. Vedes debatu na tema: {topic}. Odpovez strucne (2-3 vety)."},
+        {"role": "system", "content": f"You are an AI. You are debating on the topic: {topic}. Reply briefly (2-3 sentences)."},
     ]
     
     print(f"\n>>> {p1.upper()} ({m1}) VS {p2.upper()} ({m2})")
-    print(f"    Tema: {topic}\n")
+    print(f"    Topic: {topic}\n")
     print("=" * 60)
     
     # AI 1
     print(f"\n>>> AI 1: {p1.upper()} ({m1})")
     printer1 = StreamPrinter()
     chat1(k1, m1, conv1, printer1)
-    conv2.append({"role": "user", "content": f"Tvuj soupe rekl: {printer1.response_buffer}"})
+    conv2.append({"role": "user", "content": f"Your opponent said: {printer1.response_buffer}"})
     
     for i in range(4):
         time.sleep(0.3)
@@ -304,7 +304,7 @@ Priklady:
         print(f"\n>>> AI 2: {p2.upper()} ({m2})")
         printer2 = StreamPrinter()
         chat2(k2, m2, conv2, printer2)
-        conv1.append({"role": "user", "content": f"Tvuj soupe rekl: {printer2.response_buffer}"})
+        conv1.append({"role": "user", "content": f"Your opponent said: {printer2.response_buffer}"})
         conv2.append({"role": "assistant", "content": printer2.response_buffer})
         
         time.sleep(0.3)
@@ -313,11 +313,11 @@ Priklady:
         print(f"\n>>> AI 1: {p1.upper()} ({m1})")
         printer1 = StreamPrinter()
         chat1(k1, m1, conv1, printer1)
-        conv2.append({"role": "user", "content": f"Tvuj soupe rekl: {printer1.response_buffer}"})
+        conv2.append({"role": "user", "content": f"Your opponent said: {printer1.response_buffer}"})
         conv1.append({"role": "assistant", "content": printer1.response_buffer})
         print("\n" + "-" * 60)
     
-    print("\n[END] KONEC!")
+    print("\n[END] END!")
 
 if __name__ == "__main__":
     main()
