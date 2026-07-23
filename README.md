@@ -73,4 +73,4 @@ MIT
 ## Contributors
 
 - **UdoFreak89** - Project creator
-- **opencode** - AI assistant (code, architecture, debugging)
+- **big-pickle** - AI assistant (code, architecture, debugging)
