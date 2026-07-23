@@ -159,6 +159,10 @@ pip install -r requirements.txt
 
 MIT - do whatever you want with it.
 
+## Feedback
+
+If you try this out and have any feedback, ideas, or just want to say hi - feel free to write me at **udofreak@seznam.cz**
+
 ## Contributors
 
 - **UdoFreak89** - Project creator
